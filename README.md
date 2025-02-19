@@ -17,7 +17,7 @@
 
 
 ## ⚡ GitHub Actions 배포 과정
-**1️⃣ 워크플로우 실행 트리거**
+### 1️⃣ 워크플로우 실행 트리거
 
 ```
 on:
@@ -29,7 +29,7 @@ on:
 - main 브랜치에 코드가 푸시될 때 실행됩니다.
 - workflow_dispatch: GitHub Actions에서 수동 실행 가능하도록 합니다.
 
-**2️⃣ 배포 작업 시작**
+### 2️⃣ 배포 작업 시작
 ```
 jobs:
   deploy:
@@ -37,21 +37,21 @@ jobs:
 ```
 - ubuntu-latest → 최신 Ubuntu 환경에서 실행합니다.
 
-**3️⃣ 코드 체크아웃**
+### 3️⃣ 코드 체크아웃
 ```
 - name: Checkout repository
   uses: actions/checkout@v4
 ```
 - GitHub 저장소에서 최신 코드 가져와 CI 환경으로 다운로드합니다.
 
-**4️⃣ 의존성 설치**
+### 4️⃣ 의존성 설치
 ```
  - name: Install dependencies
    run: npm ci
 ```
 - npm ci 명령어를 실행하여 package-lock.json 기준으로 패키지를 설치합니다.
 
-**5️⃣ 프로젝트 빌드**
+### 5️⃣ 프로젝트 빌드
 ```
 - name: Build
   run: npm run build
@@ -59,7 +59,7 @@ jobs:
 - Next.js 프로젝트를 정적 파일로 변환하여 S3에 배포할 준비를 합니다.
 - npm run build 실행 후, out/ 폴더에 빌드 결과물이 생성됩니다.
 
-**6️⃣ AWS 자격 증명 설정**
+### 6️⃣ AWS 자격 증명 설정
 ```
 - name: Configure AWS credentials
   uses: aws-actions/configure-aws-credentials@v1
@@ -70,7 +70,7 @@ jobs:
 ```
 - GitHub Secrets에 저장된 AWS 인증 정보를 사용하여 AWS CLI를 구성합니다.
 
-**7️⃣ S3에 배포**
+### 7️⃣ S3에 배포
 ```
  - name: Deploy to S3
    run: |
@@ -79,7 +79,7 @@ jobs:
 - aws s3 sync 명령어를 사용해 out/ 폴더 내의 빌드 파일을 S3 버킷에 업로드합니다.
 - --delete 옵션을 사용해 S3에 남아있는 불필요한 파일을 자동으로 삭제하여 최신 상태 유지합니다.
 
-**8️⃣ CloudFront 캐시 무효화**
+### 8️⃣ CloudFront 캐시 무효화
 ```
 - name: Invalidate CloudFront cache
   run: |
@@ -142,13 +142,8 @@ jobs:
 - 테스트 환경 : Chrome 브라우저 (PC)  
 
 ### 2. 개선 방안
-#### 1. CloudFront CDN 적용
 - 기존 S3 단독 배포 방식에서 CloudFront CDN을 적용하여 정적 콘텐츠를 캐싱하고, 사용자와 가까운 엣지 로케이션에서 제공하도록 설정했습니다.
-
-#### 2. 캐싱 최적화
 - CloudFront 기본 캐시 정책을 통해 반복 요청 시 S3 부하를 줄이고 응답 속도를 개선했습니다.
-
-#### 3. HTTPS 및 압축 적용
 - CloudFront를 통해 HTTPS와 Gzip 압축을 적용하여 네트워크 트래픽을 최적화하고, 콘텐츠 로딩 속도를 개선했습니다.
 
 ### 3. CloudFront CDN 적용 후 성능 비교
@@ -175,7 +170,7 @@ jobs:
 ### 5. 추가 개선 가능성
 - 이미지 최적화
   - WebP 포맷 사용 및 이미지 크기 조정
-  - 이미지 레이지 로딩(lazy loading) 적용
+  - 이미지 lazy loading 적용
 - 브라우저 캐싱 정책 최적화
   - CloudFront 캐싱 설정 세밀화
   - 적절한 TTL(Time to Live) 설정
