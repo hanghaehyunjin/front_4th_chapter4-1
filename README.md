@@ -90,9 +90,9 @@ jobs:
 
 
 ## 🔗 주요 링크
-
 - S3 버킷 웹사이트 엔드포인트: http://performance-inspection-practice.s3-website-ap-southeast-2.amazonaws.com
 - CloudFrount 배포 도메인 이름: https://d2bs5sb8hgr7py.cloudfront.net
+
 
 ## 💫 주요 개념
 #### 1. GitHub Actions과 CI/CD 도구
@@ -102,7 +102,7 @@ jobs:
 > - **CD (지속적 배포, Continuous Deployment):** CI 과정을 거친 코드를 자동으로 배포 환경에 배포하는 과정을 의미합니다. 코드가 GitHub Actions 등의 CI 툴을 통해 자동으로 테스트된 후 배포 서버에 배포되도록 하는 과정입니다.
 
 #### 2. S3와 스토리지
-- S3 (Simple Storage Service)는 Amazon Web Services(AWS)에서 제공하는 객체 스토리지 서비스입니다. 텍스트, 이미지, 비디오 등 다양한 형태의 데이터를 저장하고 관리할 수 있으며, 높은 확장성과 안정성을 제공합니다. 
+- S3 (Simple Storage Service)는 Amazon Web Services(AWS)에서 제공하는 객체 스토리지 서비스입니다. 텍스트, 이미지, 비디오 등 다양한 형태의 데이터를 저장하고 관리할 수 있으며, 높은 확장성과 안정성을 제공합니다.
 - S3는 버전 관리, 데이터 암호화, 데이터 접근 제어 등을 제공하여 클라우드 환경에서 유연하게 데이터를 관리할 수 있습니다.
 - 스토리지는 데이터를 저장하는 장치나 시스템을 의미합니다. S3는 클라우드 기반의 스토리지 서비스로, 필요에 따라 용량을 늘리거나 줄일 수 있는 확장성과 고가용성을 제공합니다.
 
@@ -116,12 +116,80 @@ jobs:
 - 캐시 무효화가 발생하지 않으면, 오래된 캐시가 사용자에게 전달되어 최신 정보가 반영되지 않는 문제가 발생할 수 있습니다. 따라서 적절한 캐시 무효화 전략이 필요합니다.
 
 #### 5. Repository secret과 환경변수
-- Repository secret은 GitHub Repository에 저장하는 민감한 정보를 안전하게 관리하기 위한 기능입니다. 
-- Repository secret은 암호화되어 저장되며, GitHub Actions 워크플로우에서 안전하게 사용할 수 있습니다. 
+- Repository secret은 GitHub Repository에 저장하는 민감한 정보를 안전하게 관리하기 위한 기능입니다.
+- Repository secret은 암호화되어 저장되며, GitHub Actions 워크플로우에서 안전하게 사용할 수 있습니다.
 - GitHub Actions에서는 secrets를 환경변수처럼 다룰 수 있어 보안에 중요한 정보를 외부에 노출하지 않고도 자동화된 작업을 실행할 수 있습니다.
-
-- 환경변수는 프로그램 실행 환경에 영향을 주는 변수로, GitHub Actions 워크플로우에서 다양한 설정을 지정할 수 있습니다. 
+- 환경변수는 프로그램 실행 환경에 영향을 주는 변수로, GitHub Actions 워크플로우에서 다양한 설정을 지정할 수 있습니다.
 - 환경변수는 워크플로우 실행 시, 컨테이너나 가상 환경에서 사용됩니다. Repository secret도 환경변수 형태로 워크플로우에서 사용할 수 있으며, 워크플로우 내에서 다른 작업들을 수행할 때 이러한 변수를 활용하여 민감한 정보를 안전하게 처리할 수 있습니다.
 
+#### 6. 웹 성능 측정 지표
+- **TTFB (Time to First Byte)** : 사용자의 요청이 서버에 도달한 후, 첫 번째 바이트가 브라우저로 전달되는 시간입니다. 서버 응답 속도를 측정하는 중요한 지표입니다.
+- **FCP (First Contentful Paint)** : 사용자가 화면에서 첫 번째 콘텐츠(텍스트, 이미지 등)를 볼 수 있는 시점을 의미합니다. 사용자 경험과 직결되는 지표입니다.
+- **LCP (Largest Contentful Paint)** : 페이지에서 가장 큰 콘텐츠(주로 이미지, 제목 등)가 렌더링되는 시간입니다. 페이지 로딩 성능을 평가하는 데 중요한 요소입니다.
+- **DOMContentLoaded** : 브라우저가 HTML을 파싱하고 DOM 생성을 완료한 시점입니다. CSS, 이미지, 스크립트 등 다른 리소스의 로딩은 완료되지 않아도 상관없습니다.
+- **총 로드 시간** : 웹 페이지의 모든 리소스 (HTML, CSS, JavaScript, 이미지 등)가 완전히 로딩되는 데 걸리는 시간입니다.  
+
+
+
 # 📍 CDN 도입 전과 도입 후의 성능 개선 보고서
-작성중....
+### 1. 개요
+- 목적 :  CDN 성능 분석 및 개선 결과 보고
+- 배경 :  기존 S3 단독 사용 시 성능 문제 및 개선 필요성
+- 테스트 URL
+  - 개선 전 : http://performance-inspection-practice.s3-website-ap-southeast-2.amazonaws.com  
+  - 개선 후 : https://d2bs5sb8hgr7py.cloudfront.net/
+- 테스트 도구 : Chrome DevTools (네트워크 탭)  
+- 테스트 환경 : Chrome 브라우저 (PC)  
+
+### 2. 개선 방안
+#### 1. CloudFront CDN 적용
+- 기존 S3 단독 배포 방식에서 CloudFront CDN을 적용하여 정적 콘텐츠를 캐싱하고, 사용자와 가까운 엣지 로케이션에서 제공하도록 설정했습니다.
+
+#### 2. 캐싱 최적화
+- CloudFront 기본 캐시 정책을 통해 반복 요청 시 S3 부하를 줄이고 응답 속도를 개선했습니다.
+
+#### 3. HTTPS 및 압축 적용
+- CloudFront를 통해 HTTPS와 Gzip 압축을 적용하여 네트워크 트래픽을 최적화하고, 콘텐츠 로딩 속도를 개선했습니다.
+
+### 3. 기존 S3 단독 사용 성능분석
+| 측정 지표                 | S3 단독 사용
+|--------------------------|-------------------------------|
+| FCP | 750.8 ms|
+| LCP | 750.8 ms|
+| TTFB  | 165.65 ms |
+| DOMContentLoaded | 360 ms |
+| 웹사이트 로드 시간 | 685 ms |
+
+
+### 4. CloudFront CDN 적용 후 성능 비교
+<img width="815" alt="image" src="https://github.com/user-attachments/assets/f84a1b01-5a1f-4a13-9e88-7fdfc3f8c799" />
+<img width="892" alt="image" src="https://github.com/user-attachments/assets/5203ce23-c8a8-4c04-a0e1-097c61cb11e3" />
+<img width="957" alt="image" src="https://github.com/user-attachments/assets/76970973-41c9-4e2c-bf28-6568fa577b8d" />
+<img width="1002" alt="image" src="https://github.com/user-attachments/assets/71d4dec3-5625-4b57-83f0-063baf5d03c0" />
+
+
+| 측정 지표                 | S3 단독 사용 | CloudFront CDN 적용 | 개선율 (%) |
+|--------------------------|-------------|-------------------|-----------|
+| FCP  | 750.8 ms | 122.1 ms | 84% |
+| LCP  | 750.8 ms | 122.1 ms | 84% |
+| TTFB | 165.65 ms | 6.85 ms | 95% |
+| DOMContentLoaded | 360 ms |48 ms | 87%|
+| 웹사이트 로드 시간 | 685 ms | 291 ms | 58% |
+
+### 5. 분석 및 결론
+
+- CDN 도입 후 전반적인 성능 지표가 크게 개선되었습니다. 
+- 특히 서버 응답 속도를 나타내는 TTFB가 165.65ms에서 6.85ms로 개선되어 가장 큰 성능 향상을 보였습니다.
+- 사용자가 실제로 체감하는 속도를 나타내는 FCP와 LCP는 각각 750.8ms에서 122.1ms로 84% 감소하였으며, 전체 웹사이트 로드 시간은 685ms에서 291ms로 58% 단축되었습니다.
+
+### 6. 추가 개선 가능성
+- 이미지 최적화
+  - WebP 포맷 사용 및 이미지 크기 조정
+  - 이미지 레이지 로딩(lazy loading) 적용
+- 브라우저 캐싱 정책 최적화
+  - CloudFront 캐싱 설정 세밀화
+  - 적절한 TTL(Time to Live) 설정
+- 코드 최적화
+  - JavaScript 및 CSS 파일 최소화
+  - JavaScript의 lazy loading 적용
+
