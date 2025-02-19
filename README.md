@@ -154,7 +154,7 @@ jobs:
 ### 3. CloudFront CDN 적용 후 성능 비교
 <img width="815" alt="image" src="https://github.com/user-attachments/assets/f84a1b01-5a1f-4a13-9e88-7fdfc3f8c799" />
 <img width="892" alt="image" src="https://github.com/user-attachments/assets/5203ce23-c8a8-4c04-a0e1-097c61cb11e3" />
-<img width="957" alt="image" src="https://github.com/user-attachments/assets/76970973-41c9-4e2c-bf28-6568fa577b8d" />
+<img width="956" alt="image" src="https://github.com/user-attachments/assets/952391dc-65a0-48f4-9763-e00d8a052f89" />
 <img width="1002" alt="image" src="https://github.com/user-attachments/assets/71d4dec3-5625-4b57-83f0-063baf5d03c0" />
 
 
