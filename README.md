@@ -151,17 +151,7 @@ jobs:
 #### 3. HTTPS 및 압축 적용
 - CloudFront를 통해 HTTPS와 Gzip 압축을 적용하여 네트워크 트래픽을 최적화하고, 콘텐츠 로딩 속도를 개선했습니다.
 
-### 3. 기존 S3 단독 사용 성능분석
-| 측정 지표                 | S3 단독 사용
-|--------------------------|-------------------------------|
-| FCP | 750.8 ms|
-| LCP | 750.8 ms|
-| TTFB  | 165.65 ms |
-| DOMContentLoaded | 360 ms |
-| 웹사이트 로드 시간 | 685 ms |
-
-
-### 4. CloudFront CDN 적용 후 성능 비교
+### 3. CloudFront CDN 적용 후 성능 비교
 <img width="815" alt="image" src="https://github.com/user-attachments/assets/f84a1b01-5a1f-4a13-9e88-7fdfc3f8c799" />
 <img width="892" alt="image" src="https://github.com/user-attachments/assets/5203ce23-c8a8-4c04-a0e1-097c61cb11e3" />
 <img width="957" alt="image" src="https://github.com/user-attachments/assets/76970973-41c9-4e2c-bf28-6568fa577b8d" />
@@ -176,13 +166,13 @@ jobs:
 | DOMContentLoaded | 360 ms |48 ms | 87%|
 | 웹사이트 로드 시간 | 685 ms | 291 ms | 58% |
 
-### 5. 분석 및 결론
+### 4. 분석 및 결론
 
 - CDN 도입 후 전반적인 성능 지표가 크게 개선되었습니다. 
 - 특히 서버 응답 속도를 나타내는 TTFB가 165.65ms에서 6.85ms로 개선되어 가장 큰 성능 향상을 보였습니다.
 - 사용자가 실제로 체감하는 속도를 나타내는 FCP와 LCP는 각각 750.8ms에서 122.1ms로 84% 감소하였으며, 전체 웹사이트 로드 시간은 685ms에서 291ms로 58% 단축되었습니다.
 
-### 6. 추가 개선 가능성
+### 5. 추가 개선 가능성
 - 이미지 최적화
   - WebP 포맷 사용 및 이미지 크기 조정
   - 이미지 레이지 로딩(lazy loading) 적용
